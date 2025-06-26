@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BXI Cipher Converter</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: #0d1117;
+      color: #c9d1d9;
+      padding: 2rem;
+      text-align: center;
+    }
+    input {
+      font-size: 1.2rem;
+      padding: 0.5rem;
+      width: 80%;
+      margin-top: 1rem;
+      background: #161b22;
+      border: 1px solid #30363d;
+      color: #fff;
+    }
+    .result {
+      margin-top: 2rem;
+      font-size: 1.4rem;
+      color: #58a6ff;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔐 BXI Cipher Converter</h1>
+  <p>Type a word or phrase (A-Z only):</p>
+  <input type="text" id="input" oninput="convertBXI()" placeholder="HELLO" />
+  <div class="result" id="output"></div>
+
+  <script>
+    function letterToBXI(letter) {
+      const n = letter.charCodeAt(0) - 64; // A=1 ... Z=26
+      if (n < 1 || n > 26) return '';
+      const val = Math.floor(n / 2) + 1;
+      return val.toString(2).padStart(4, '0');
+    }
+
+    function convertBXI() {
+      const input = document.getElementById('input').value.toUpperCase();
+      const result = input
+        .split('')
+        .map(char => letterToBXI(char))
+        .filter(bin => bin !== '')
+        .join(' ');
+
+      document.getElementById('output').innerText = result || '[waiting for input...]';
+    }
+  </script>
+</body>
+</html>
