@@ -32,61 +32,59 @@
       padding: 1rem;
       border: 1px solid #30363d;
     }
+  </style<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BXI Cipher Converter</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: #0d1117;
+      color: #c9d1d9;
+      padding: 2rem;
+      text-align: center;
+    }
+    input {
+      font-size: 1.2rem;
+      padding: 0.5rem;
+      width: 80%;
+      margin-top: 1rem;
+      background: #161b22;
+      border: 1px solid #30363d;
+      color: #fff;
+    }
+    .result {
+      margin-top: 2rem;
+      font-size: 1.4rem;
+      color: #58a6ff;
+    }
   </style>
 </head>
 <body>
   <h1>🔐 BXI Cipher Converter</h1>
-
-  <label>Type a word or phrase (A-Z only):</label>
-  <input id="textInput" type="text" placeholder="HELLO" />
-  <button onclick="convertToBXI()">Encrypt to BXI</button>
-  <div class="output" id="binaryOutput"></div>
-
-  <label>🔁 BXI Decryption</label>
-  <input id="bxiInput" type="text" placeholder="0001 0100" />
-  <button onclick="decryptBXI()">Decrypt from BXI</button>
-  <div class="output" id="letterOutput"></div>
+  <p>Type a word or phrase (A-Z only):</p>
+  <input type="text" id="input" oninput="convertBXI()" placeholder="HELLO" />
+  <div class="result" id="output"></div>
 
   <script>
-    const bxiTable = [
-      "A",     // 0001 = 1
-      "B–C",   // 0010 = 2
-      "D–E",   // 0011 = 3
-      "H–I",   // 0100 = 4 ✅
-      "F–G",   // 0101 = 5
-      "J–K",   // 0110 = 6
-      "L–M",   // 0111 = 7
-      "N–O",   // 1000 = 8
-      "P–Q",   // 1001 = 9
-      "R–S",   // 1010 = 10
-      "T–U",   // 1011 = 11
-      "V–W",   // 1100 = 12
-      "X–Y",   // 1101 = 13
-      "Z"       // 1110 = 14
-    ];
-
-    function convertToBXI() {
-      const input = document.getElementById("textInput").value.toUpperCase();
-      let output = "";
-      for (let char of input) {
-        if (char >= 'A' && char <= 'Z') {
-          let n = char.charCodeAt(0) - 64;
-          let bxi = Math.floor((n - 1) / 2) + 1;
-          let binary = bxi.toString(2).padStart(4, '0');
-          output += binary + ' ';
-        }
-      }
-      document.getElementById("binaryOutput").innerText = output.trim();
+    function letterToBXI(letter) {
+      const n = letter.charCodeAt(0) - 64; // A=1 ... Z=26
+      if (n < 1 || n > 26) return '';
+      const val = Math.floor(n / 2) + 1;
+      return val.toString(2).padStart(4, '0');
     }
 
-    function decryptBXI() {
-      const input = document.getElementById("bxiInput").value.trim().split(" ");
-      let output = "";
-      for (let bin of input) {
-        let decimal = parseInt(bin, 2);
-        output += (bxiTable[decimal - 1] || "?") + " ";
-      }
-      document.getElementById("letterOutput").innerText = output.trim();
+    function convertBXI() {
+      const input = document.getElementById('input').value.toUpperCase();
+      const result = input
+        .split('')
+        .map(char => letterToBXI(char))
+        .filter(bin => bin !== '')
+        .join(' ');
+
+      document.getElementById('output').innerText = result || '[waiting for input...]';
     }
   </script>
 </body>
