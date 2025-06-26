@@ -26,6 +26,9 @@
       font-size: 1.4rem;
       color: #58a6ff;
     }
+    .section {
+      margin-top: 3rem;
+    }
   </style>
 </head>
 <body>
@@ -33,6 +36,13 @@
   <p>Type a word or phrase (A-Z only):</p>
   <input type="text" id="input" oninput="convertBXI()" placeholder="HELLO" />
   <div class="result" id="output"></div>
+
+  <div class="section">
+    <h2>🔁 BXI Decryption</h2>
+    <p>Enter BXI 4-bit codes separated by spaces (e.g. <code>0001 0100</code>):</p>
+    <input type="text" id="decrypt" oninput="decryptBXI()" placeholder="0001 0100" />
+    <div class="result" id="decrypted"></div>
+  </div>
 
   <script>
     function letterToBXI(letter) {
@@ -52,6 +62,24 @@
 
       document.getElementById('output').innerText = result || '[waiting for input...]';
     }
+
+    function bxiToLetters(bin) {
+      const val = parseInt(bin, 2);
+      if (isNaN(val) || val < 1 || val > 14) return '[?]';
+      if (val === 1) return 'A';
+      if (val === 14) return 'Z';
+      const a = 2 * val - 1;
+      const b = 2 * val;
+      return String.fromCharCode(64 + a) + '/' + String.fromCharCode(64 + b);
+    }
+
+    function decryptBXI() {
+      const input = document.getElementById('decrypt').value.trim();
+      const parts = input.split(/\s+/);
+      const result = parts.map(bin => bxiToLetters(bin)).join(' ');
+      document.getElementById('decrypted').innerText = result || '[waiting for input...]';
+    }
   </script>
 </body>
 </html>
+
