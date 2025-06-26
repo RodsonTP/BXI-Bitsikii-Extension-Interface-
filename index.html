@@ -10,74 +10,83 @@
       background: #0d1117;
       color: #c9d1d9;
       padding: 2rem;
-      text-align: center;
     }
-    input {
-      font-size: 1.2rem;
+    input, textarea {
+      width: 100%;
+      margin-bottom: 1rem;
       padding: 0.5rem;
-      width: 80%;
+      background: #161b22;
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      background: #238636;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .output {
       margin-top: 1rem;
       background: #161b22;
+      padding: 1rem;
       border: 1px solid #30363d;
-      color: #fff;
-    }
-    .result {
-      margin-top: 2rem;
-      font-size: 1.4rem;
-      color: #58a6ff;
-    }
-    .section {
-      margin-top: 3rem;
     }
   </style>
 </head>
 <body>
   <h1>🔐 BXI Cipher Converter</h1>
-  <p>Type a word or phrase (A-Z only):</p>
-  <input type="text" id="input" oninput="convertBXI()" placeholder="HELLO" />
-  <div class="result" id="output"></div>
 
-  <div class="section">
-    <h2>🔁 BXI Decryption</h2>
-    <p>Enter BXI 4-bit codes separated by spaces (e.g. <code>0001 0100</code>):</p>
-    <input type="text" id="decrypt" oninput="decryptBXI()" placeholder="0001 0100" />
-    <div class="result" id="decrypted"></div>
-  </div>
+  <label>Type a word or phrase (A-Z only):</label>
+  <input id="textInput" type="text" placeholder="HELLO" />
+  <button onclick="convertToBXI()">Encrypt to BXI</button>
+  <div class="output" id="binaryOutput"></div>
+
+  <label>🔁 BXI Decryption</label>
+  <input id="bxiInput" type="text" placeholder="0001 0100" />
+  <button onclick="decryptBXI()">Decrypt from BXI</button>
+  <div class="output" id="letterOutput"></div>
 
   <script>
-    function letterToBXI(letter) {
-      const n = letter.charCodeAt(0) - 64; // A=1 ... Z=26
-      if (n < 1 || n > 26) return '';
-      const val = Math.floor(n / 2) + 1;
-      return val.toString(2).padStart(4, '0');
-    }
+    const bxiTable = [
+      "A",     // 1
+      "B–C",   // 2
+      "D–E",   // 3
+      "F–G",   // 4
+      "H–I",   // 5
+      "J–K",   // 6
+      "L–M",   // 7
+      "N–O",   // 8
+      "P–Q",   // 9
+      "R–S",   // 10
+      "T–U",   // 11
+      "V–W",   // 12
+      "X–Y",   // 13
+      "Z"       // 14
+    ];
 
-    function convertBXI() {
-      const input = document.getElementById('input').value.toUpperCase();
-      const result = input
-        .split('')
-        .map(char => letterToBXI(char))
-        .filter(bin => bin !== '')
-        .join(' ');
-
-      document.getElementById('output').innerText = result || '[waiting for input...]';
-    }
-
-    function bxiToLetters(bin) {
-      const val = parseInt(bin, 2);
-      if (isNaN(val) || val < 1 || val > 14) return '[?]';
-      if (val === 1) return 'A';
-      if (val === 14) return 'Z';
-      const a = 2 * val - 1;
-      const b = 2 * val;
-      return String.fromCharCode(64 + a) + '/' + String.fromCharCode(64 + b);
+    function convertToBXI() {
+      const input = document.getElementById("textInput").value.toUpperCase();
+      let output = "";
+      for (let char of input) {
+        if (char >= 'A' && char <= 'Z') {
+          let n = char.charCodeAt(0) - 64;
+          let bxi = Math.floor((n - 1) / 2) + 1;
+          let binary = bxi.toString(2).padStart(4, '0');
+          output += binary + ' ';
+        }
+      }
+      document.getElementById("binaryOutput").innerText = output.trim();
     }
 
     function decryptBXI() {
-      const input = document.getElementById('decrypt').value.trim();
-      const parts = input.split(/\s+/);
-      const result = parts.map(bin => bxiToLetters(bin)).join(' ');
-      document.getElementById('decrypted').innerText = result || '[waiting for input...]';
+      const input = document.getElementById("bxiInput").value.trim().split(" ");
+      let output = "";
+      for (let bin of input) {
+        let decimal = parseInt(bin, 2);
+        output += (bxiTable[decimal - 1] || "?") + " ";
+      }
+      document.getElementById("letterOutput").innerText = output.trim();
     }
   </script>
 </body>
