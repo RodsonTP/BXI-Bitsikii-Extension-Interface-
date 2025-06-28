@@ -43,10 +43,10 @@ Take any BXI value (`0–13`) and convert it like this:
 
 ## 🔐 Example: ENCODE "NO"
 
-- `N = 14` → `BXI = ⌊(13/2)⌋+1 = 6+1 = 7` → `0111`  
-- `O = 15` → `BXI = ⌊(14/2)⌋+1 = 7+1 = 8` → `1000`
+- `N = 14` → `BXI = [14/2] + 1 = 7 + 1 = 8 → '1000'  
+- 'O = 15' → 'BXI = [15/2] + 1 = 7 + 1 = 8' → '1000'
 
-**"NO" in BXI = `0111 1000`**
+**"NO" in BXI = `1000 1000`** Why? cause N and O are pair in the table.
 
 Remember when converting BXI(n)= [n/2] + 1
 n should be the aphabetical number of the letter ex. Z is 26.
