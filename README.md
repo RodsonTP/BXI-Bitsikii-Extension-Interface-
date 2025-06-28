@@ -11,7 +11,7 @@ BXI(n)= [n/2] + 1
 - `n` = letter position in the alphabet (A=1, ..., Z=26)
 - `⌊ ⌋` = floor function (drop decimals)
 
-🔹 BXI values range from 0 to 13.
+🔹 BXI values range from 0 to 14.
 
 ---
 
