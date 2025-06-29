@@ -1,78 +1,46 @@
-# 🔐 BXI Cipher System  
+# BXI Cipher System – Bitsikii Extension Interface
 
----
+The BXI Cipher is a custom 4-bit binary encryption scheme that maps letters A–Z into compact, binary-encoded values. Designed for lightweight encryption and educational purposes.
+
+## 📌 Formula
+To get the BXI value of any letter:
+BXI(n) = ⌊n / 2⌋ + 1
+
+ Where:
+- `n` = letter's alphabetical position (A=1, B=2... Z=26)
+- `⌊ ⌋` = floor function (drop decimals)
+
+## 📊 Encoding Table
+| Letters | BXI Value | 4-Bit Binary |
+|---------|----------|--------------|
+| A       | 1        | `0001`       |
+| B, C    | 2        | `0010`       |
+| D, E    | 3        | `0011`       |
+| F, G    | 4        | `0100`       |
+| H, I    | 5        | `0101`       |
+| J, K    | 6        | `0110`       |
+| L, M    | 7        | `0111`       |
+| N, O    | 8        | `1000`       |
+| P, Q    | 9        | `1001`       |
+| R, S    | 10       | `1010`       |
+| T, U    | 11       | `1011`       |
+| V, W    | 12       | `1100`       |
+| X, Y    | 13       | `1101`       |
+| Z       | 14       | `1110`       |
+| [Space] | 15       | `1111`       |
+
+## 🧪 Example: "NO"
+N = position 14 → ⌊14/2⌋+1 = 8 → 1000
+O = position 15 → ⌊15/2⌋+1 = 8 → 1000
+Encoded: 1000 1000
 
 
-## 🌟 The BXI Cipher Ultimate
-### **Core Innovation**  
-Letters are encoded differently based on their position in natural pairs:  
-- **First in Pair (B,D,F...)** → Raw BXI value  
-- **Second in Pair (C,E,G...)** → XOR-encoded BXI  
-- **Singletons (A,Z)** → Always raw  
-
-### **Why This Rocks**  
-✅ **Eliminates all collisions** (B≠C, D≠E, etc.)  
-✅ **Preserves 4-bit efficiency**  
-✅ **Adds security without complexity**  
-
----
-
-## 📊 Complete Pairwise Encoding Table (A-Z)
-| Letter | Position | Type        | Raw BXI | XOR 1010 | Final Encoding |
-|--------|----------|-------------|---------|----------|----------------|
-| A      | 1        | Singleton   | 0001    | —        | `0001`         |
-| B      | 2        | Pair First  | 0010    | —        | `0010`         |
-| C      | 3        | Pair Second | 0010    | 1000     | `1000`         |
-| D      | 4        | Pair First  | 0011    | —        | `0011`         |
-| E      | 5        | Pair Second | 0011    | 1001     | `1001`         |
-| F      | 6        | Pair First  | 0100    | —        | `0100`         |
-| G      | 7        | Pair Second | 0100    | 1110     | `1110`         |
-| H      | 8        | Pair First  | 0101    | —        | `0101`         |
-| I      | 9        | Pair Second | 0101    | 1111     | `1111`         |
-| J      | 10       | Pair First  | 0110    | —        | `0110`         |
-| K      | 11       | Pair Second | 0110    | 1100     | `1100`         |
-| L      | 12       | Pair First  | 0111    | —        | `0111`         |
-| M      | 13       | Pair Second | 0111    | 1101     | `1101`         |
-| N      | 14       | Pair First  | 1000    | —        | `1000`         |
-| O      | 15       | Pair Second | 1000    | 0010     | `0010`         |
-| P      | 16       | Pair First  | 1001    | —        | `1001`         |
-| Q      | 17       | Pair Second | 1001    | 0011     | `0011`         |
-| R      | 18       | Pair First  | 1010    | —        | `1010`         |
-| S      | 19       | Pair Second | 1010    | 0000     | `0000`         |
-| T      | 20       | Pair First  | 1011    | —        | `1011`         |
-| U      | 21       | Pair Second | 1011    | 0001     | `0001`         |
-| V      | 22       | Pair First  | 1100    | —        | `1100`         |
-| W      | 23       | Pair Second | 1100    | 0110     | `0110`         |
-| X      | 24       | Pair First  | 1101    | —        | `1101`         |
-| Y      | 25       | Pair Second | 1101    | 0111     | `0111`         |
-| Z      | 26       | Singleton   | 1110    | —        | `1110`         |
-| [Space]| —        | Special     | 1111    | 0101     | `1111`/`0101`  |
-
-### 🔑 Key Rules
-1. **Pair First**: Raw BXI value (B,D,F...)
-2. **Pair Second**: XOR with `1010` (C,E,G...)
-3. **Singletons**: Always raw (A,Z)
-4. **Space**: Optional `1111` (raw) or `0101` (XOR)
-
-### 💡 Example Patterns
-- **B** (First) → `0010`  
-  **C** (Second) → `1000`  
-- **T** (First) → `1011`  
-  **U** (Second) → `0001`  
-
----
-
-## 🔄 Encoding Process  
-### **Step-by-Step Example: "BEC"**  
-1. **B** (Pair First):  
-   - Position 2 → BXI=2 → `0010` (raw)  
-2. **E** (Pair Second):  
-   - Position 5 → BXI=3 → `0011` XOR `1010` = `1001`  
-3. **C** (Pair Second):  
-   - Position 3 → BXI=2 → `0010` XOR `1010` = `1000`  
-
-**Final Encoding**: `0010 1001 1000`  
-
+## 💡 Key Features
+- 4-bit efficiency (smaller than ASCII)
+- Letter pairs share codes (B/C both = `0010`)
+- Space support via `1111`
+- Designed for education and fun
+- 
 ---
 
 ## 🧠 How to Convert a Number to 4-bit Binary
@@ -123,6 +91,37 @@ Since `110` only has 3 digits, pad it to 4 digits:
 * Uses the formula `BXI(n) = ⌊n / 2⌋ + 1`
 * Binary values range from `0001` to `1110`
 * Great for encryption demos, learning binary, and compact encoding
+
+
+## 🔄 Optional XOR Extension
+Want to make it more secure? Add XOR encryption:
+
+### How It Works
+1. Choose a 4-bit key (e.g., `1010`)
+2. Apply XOR to any selected letters:
+Example:
+Key: 1010
+NO: 0010 0010
+
+### Example: "HELLO"  
+- **Basic**: `0101 0100 0111 0111 1000`  
+- **With XOR (key=1010)**: `0101 1111 0111 1101 1000`  
+---
+
+
+### Pros/Cons
+| Feature     | Basic BXI | BXI + XOR |
+|------------|----------|-----------|
+| Collisions | Yes (B=C) | No        |
+| Security   | Low       | Medium    |
+| Complexity | Simple    | Moderate  |
+
+## 🧪 Example: "HELLO"
+- **Basic**: `0101 0100 0111 0111 1000`  
+- **With XOR (key=1010)**: `0101 1111 0111 1101 1000`
+  
+---
+
 
 ### 👑 Created by RodsonTP
 
