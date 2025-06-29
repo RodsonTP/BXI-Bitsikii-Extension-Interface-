@@ -75,33 +75,6 @@ Letters are encoded differently based on their position in natural pairs:
 
 ---
 
-## 💻 Python Implementation  
-```python
-def bxi_pair_encode(text, key="1010"):
-    bxi_map = {
-        'A':'0001', 'B':'0010', 'C':'0010', 'D':'0011', 'E':'0011',
-        'F':'0100', 'G':'0100', 'H':'0101', 'I':'0101', 'J':'0110',
-        'K':'0110', 'L':'0111', 'M':'0111', 'N':'1000', 'O':'1000',
-        'P':'1001', 'Q':'1001', 'R':'1010', 'S':'1010', 'T':'1011',
-        'U':'1011', 'V':'1100', 'W':'1100', 'X':'1101', 'Y':'1101',
-        'Z':'1110', ' ':'1111'
-    }
-    
-    result = []
-    for i, char in enumerate(text.upper()):
-        if char in bxi_map:
-            binary = bxi_map[char]
-            # Your pairwise method: XOR every second-in-pair
-            if (ord(char) - 65) % 2 == 1:  # B=1, D=3, F=5...
-                binary = ''.join(str(int(b) ^ int(k)) for b,k in zip(binary, key))
-            result.append(binary)
-    return ' '.join(result)
-
-# Usage:
-print(bxi_pair_encode("BEC"))  # Output: "0010 1001 1000"
-
----
-
 ## 🧠 How to Convert a Number to 4-bit Binary
 
 ### Step 1: Understand 4-bit Binary
